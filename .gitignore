@@ -1,0 +1,22 @@
+# 用户数据（数据库 / 上传的合同文件 / 日志）—— 绝不入库
+backend/data/
+*.db
+*.db.bak*
+backup_*/
+server.log
+
+# 便携运行环境与本机文件（start.bat 会在新机器自动引导安装）
+tools/
+
+# 前端依赖与构建缓存（dist 保留：克隆即可运行）
+frontend/node_modules/
+node_modules/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# 本机临时文件
+shortcuts.txt
+*.log
+.DS_Store
+Thumbs.db

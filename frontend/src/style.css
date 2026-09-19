@@ -1,0 +1,117 @@
+:root {
+  --el-color-primary: #1f4e79;
+  --el-color-primary-light-3: #4a7aa5;
+  --el-color-primary-light-5: #7a9cbf;
+  --el-color-primary-light-7: #a9c2d8;
+  --el-color-primary-light-8: #c4d5e5;
+  --el-color-primary-light-9: #e3ecf4;
+  --el-color-primary-dark-2: #163c5c;
+  --side-bg: #17293d;
+  --side-text: #a8bdd0;
+}
+
+* { box-sizing: border-box; }
+html, body, #app { height: 100%; margin: 0; }
+body {
+  font-family: "Microsoft YaHei", "PingFang SC", "Segoe UI", sans-serif;
+  background: #f4f6f9;
+  color: #24303c;
+  font-size: 13.5px;
+}
+
+/* 布局 */
+.layout { height: 100vh; }
+.layout .el-aside {
+  background: var(--side-bg);
+  display: flex; flex-direction: column;
+}
+.logo {
+  color: #fff; font-size: 15px; font-weight: 700;
+  padding: 18px 16px 14px; letter-spacing: .5px;
+  display: flex; align-items: center; gap: 8px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+.logo .sub { display: block; font-size: 11px; font-weight: 400; color: var(--side-text); margin-top: 3px; letter-spacing: 0; }
+.side-menu { border-right: none; background: transparent; flex: 1; }
+.side-menu .el-menu-item {
+  color: var(--side-text); height: 46px;
+}
+.side-menu .el-menu-item:hover { background: rgba(255,255,255,.06); color: #fff; }
+.side-menu .el-menu-item.is-active {
+  background: var(--el-color-primary); color: #fff;
+  border-right: 3px solid #7fb1e0;
+}
+.side-foot { color: #5b7290; font-size: 11px; padding: 14px 16px; }
+
+.page-header {
+  background: #fff; border-bottom: 1px solid #e6eaf0;
+  padding: 0 22px; height: 56px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.page-header h2 { font-size: 17px; margin: 0; font-weight: 600; }
+.header-right { display: flex; align-items: center; gap: 16px; }
+
+/* 公司切换器：醒目样式 */
+.company-switch { width: 210px; }
+.company-switch .el-select__wrapper {
+  background: #eaf3fb;
+  box-shadow: 0 0 0 1.5px #2e6da4 inset;
+  font-weight: 700; color: #1f4e79; font-size: 14px;
+  border-radius: 6px;
+}
+.company-switch .el-select__wrapper:hover { box-shadow: 0 0 0 2px #1f4e79 inset; }
+.company-switch .el-select__placeholder { font-weight: 700; color: #1f4e79; }
+.main-content { padding: 18px 22px; overflow-y: auto; height: calc(100vh - 56px); }
+
+/* 通用卡片 */
+.panel {
+  background: #fff; border-radius: 8px;
+  border: 1px solid #e8ecf2;
+  padding: 16px 18px;
+}
+.panel + .panel { margin-top: 16px; }
+.panel-title {
+  font-size: 14.5px; font-weight: 600; margin: 0 0 12px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.panel-title .right { font-weight: 400; font-size: 12.5px; color: #8a97a5; }
+
+/* KPI 卡 */
+.kpi-grid { display: grid; gap: 12px; }
+.kpi-card {
+  background: #fff; border-radius: 8px; border: 1px solid #e8ecf2;
+  padding: 14px 16px; position: relative; overflow: hidden;
+}
+.kpi-card .label { color: #7d8b99; font-size: 12.5px; display: flex; align-items: center; gap: 6px; }
+.kpi-card .value { font-size: 22px; font-weight: 700; margin-top: 6px; font-variant-numeric: tabular-nums; }
+.kpi-card .value .unit { font-size: 12px; font-weight: 400; color: #8a97a5; margin-left: 4px; }
+.kpi-card .extra { font-size: 12px; color: #8a97a5; margin-top: 4px; }
+.kpi-card.accent { border-top: 3px solid var(--el-color-primary); }
+.kpi-card.danger .value { color: #c0392b; }
+.kpi-card.success .value { color: #1e8449; }
+.kpi-card.warn .value { color: #b9770e; }
+
+/* 金额数字 */
+.num { font-variant-numeric: tabular-nums; }
+.muted { color: #98a4b1; }
+.danger-text { color: #c0392b; font-weight: 600; }
+.success-text { color: #1e8449; font-weight: 600; }
+
+/* 表格 */
+.el-table { --el-table-header-bg-color: #f5f8fb; --el-table-header-text-color: #4c5b6b; }
+.el-table .cell { font-size: 13px; }
+
+.dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 5px; }
+.dot-green { background: #2eab5c; } .dot-yellow { background: #e6a23c; }
+.dot-red { background: #e2564a; } .dot-gray { background: #b8c2cc; } .dot-blue { background: #4a90d9; }
+
+.dropzone {
+  border: 1.5px dashed #b9c9d8; border-radius: 8px;
+  padding: 26px 18px; text-align: center; color: #7d8b99;
+  background: #fafcfe; cursor: pointer; transition: all .15s;
+}
+.dropzone:hover, .dropzone.dragover { border-color: var(--el-color-primary); background: #eef5fb; color: var(--el-color-primary); }
+
+.field-map .el-input-number, .field-map .el-input, .field-map .el-select { width: 100%; }
+
+.tag-pill { font-size: 11px; }
