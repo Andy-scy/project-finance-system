@@ -4,7 +4,7 @@
 $ErrorActionPreference = 'Stop'
 $owner = 'Andy-scy'
 $repo = 'project-finance-system'
-$root = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
+$root = Split-Path -Parent $PSScriptRoot   # repo root (scripts/ 的上一级)
 
 Write-Host '[1/4] checking github.com connectivity...'
 try {
@@ -34,14 +34,28 @@ if (-not $token) { Write-Host '[ERROR] no stored GitHub credential found.'; exit
 $headers = @{ Authorization = "token $token"; 'User-Agent' = $owner }
 
 Write-Host '[3/4] ensuring public repo exists...'
-$check = Invoke-WebRequest -Uri "https://api.github.com/repos/$owner/$repo" -Headers $headers -UseBasicParsing -TimeoutSec 20 -SkipHttpErrorCheck -ErrorAction SilentlyContinue
-if ($check -and $check.StatusCode -eq 200) {
+$exists = $false
+try {
+    $null = Invoke-WebRequest -Uri "https://api.github.com/repos/$owner/$repo" -Headers $headers -UseBasicParsing -TimeoutSec 20
+    $exists = $true
+} catch {
+    $code = $null
+    try { $code = [int]$_.Exception.Response.StatusCode } catch {}
+    if ($code -ne 404) { Write-Host "[ERROR] repo check failed (http $code)."; exit 1 }
+}
+if ($exists) {
     Write-Host '    repo already exists, skip creation'
 } else {
     $body = @{ name = $repo; private = $false; description = 'Local web app for project finance & contract management (FastAPI + SQLite + Vue3)' } | ConvertTo-Json
-    $resp = Invoke-WebRequest -Uri 'https://api.github.com/user/repos' -Method POST -Headers $headers -Body $body -ContentType 'application/json' -UseBasicParsing -TimeoutSec 30 -SkipHttpErrorCheck
-    if ($resp.StatusCode -in 201, 422) { Write-Host ('    repo created (http ' + $resp.StatusCode + ')') }
-    else { Write-Host ('[ERROR] repo creation failed http ' + $resp.StatusCode + ': ' + $resp.Content.Substring(0, [Math]::Min(300, $resp.Content.Length))); exit 1 }
+    try {
+        $null = Invoke-WebRequest -Uri 'https://api.github.com/user/repos' -Method POST -Headers $headers -Body $body -ContentType 'application/json' -UseBasicParsing -TimeoutSec 30
+        Write-Host '    repo created'
+    } catch {
+        $code = $null
+        try { $code = [int]$_.Exception.Response.StatusCode } catch {}
+        if ($code -eq 422) { Write-Host '    repo already exists (422), continue' }
+        else { Write-Host "[ERROR] repo creation failed (http $code)."; exit 1 }
+    }
 }
 
 Write-Host '[4/4] pushing main branch...'
